@@ -1,0 +1,1 @@
+select * from monthly_revenue_by_region.csv;
