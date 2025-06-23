@@ -9,3 +9,12 @@ databases:
 - name: local
   type: duckdb
   dataset: db/
+
+authentication:
+  basic:
+    smtp_user: dljalsdfk@gmail.com
+    smtp_password_var: AUTH_SMTP_PASSWORD
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+  api_key:
+    header: X-API-KEY
