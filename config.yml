@@ -9,4 +9,7 @@ databases:
 - name: local
   type: duckdb
   dataset: db/
-
+authentication:
+  google:
+    client_id: 4786469222-dlvn0v70lh8e5fffielgncmjnfq73uk3.apps.googleusercontent.com
+    client_secret_var: GOOGLE_CLIENT_SECRET
