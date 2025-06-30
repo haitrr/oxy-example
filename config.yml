@@ -1,15 +1,124 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/oxy-hq/oxy/refs/heads/main/json-schemas/config.json
+
+databases:
+  - name: primary_database
+    type: bigquery
+    key_path: bigquery-sample.key
+    datasets:
+      airbyte:
+        - "typeform_forms__links"
+      dbt_prod_core:
+        - "*"
+      dbt_prod_metrics:
+        - "monthly_active_*"
+      python_prod:
+        - "v1_*"
+
+    # dry_run_limit: 1
+
+  - name: omni_bigquery
+    type: bigquery
+    # key_path: omni_bigquery.json
+    key_path: bigquery-sample.key # this is just here for placeholder
+    dataset: dbt_prod_fpx
+
+  - name: local
+    type: duckdb
+    key_path: None
+    dataset: .db/
+
+  - name: snowflake
+    type: snowflake
+    account: jla01554
+    username: jeffthebest
+    password_var: SNOWFLAKE_PASSWORD
+    warehouse: COMPUTE_WH
+    database: DEMO_DB
+
+  - name: postgres
+    type: postgres
+    host: "localhost"
+    port: "5432"
+    user: "admin"
+    password_var: POSTGRES_PASSWORD
+    database: "default"
+
+  - name: mysql
+    type: mysql
+    host: "localhost"
+    port: "3306"
+    user: "admin"
+    password_var: MYSQL_PASSWORD
+    database: "default"
+
+  - name: clickhouse
+    type: clickhouse
+    host: http://localhost:8123
+    user: default
+    password_var: CLICKHOUSE_PASSWORD
+    database: default
+    schemas:
+      default:
+        - "hacker_news_*"
+
+models:
+  - name: openai-4o-mini
+    vendor: openai
+    model_ref: gpt-4o-mini
+    key_var: OPENAI_API_KEY
+  - name: openai-o4-mini
+    vendor: openai
+    model_ref: o4-mini
+    key_var: OPENAI_API_KEY
+  - name: openai-4o
+    vendor: openai
+    model_ref: gpt-4o
+    key_var: OPENAI_API_KEY
+  - name: openai-4.1
+    vendor: openai
+    model_ref: gpt-4.1
+    key_var: OPENAI_API_KEY
+  # - name: openai-4o-mini-azure
+  #   vendor: openai
+  #   model_ref: openai-4o-mini-azure
+  #   api_url: something
+  #   azure_deployment_id: "SMART-Automated-gpt-4o"
+  #   azure_api_version: "2024-08-01-preview"
+  #   key_var: OPENAI_AZURE_KEY
+  - name: llama3.2
+    vendor: ollama
+    model_ref: llama3.2:latest
+    api_url: http://localhost:11434/v1
+    api_key: secret
+  - name: gemini1.5pro
+    key_var: GEMINI_API_KEY
+    model_ref: gemini-1.5-pro
+    vendor: google
+  - vendor: anthropic
+    name: claude-3-7-sonnet
+    model_ref: claude-3-7-sonnet-20250219
+    key_var: ANTHROPIC_API_KEY
+
+retrievals:
+  - name: default
+    embed_model: "bge-small-en-v1.5"
+    rerank_model: "jina-reranker-v2-base-multiligual"
+    top_k: 10
+    factor: 5
+
 defaults:
   database: local
-models:
-- vendor: openai
-  name: gpt4o
-  model_ref: gpt-4o
-  key_var: OPENAI_API_KEY
-databases:
-- name: local
-  type: duckdb
-  dataset: db/
+
+builder_agent: agents/builder.agent.yml
+
 authentication:
+  basic:
+    smtp_user: huyle1995x@gmail.com
+    smtp_password_var: AUTH_SMTP_PASSWORD
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
   google:
     client_id: 4786469222-dlvn0v70lh8e5fffielgncmjnfq73uk3.apps.googleusercontent.com
     client_secret_var: GOOGLE_CLIENT_SECRET
+  api_key:
+    header: X-API-KEY
