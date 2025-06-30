@@ -1,4 +1,4 @@
-model: gpt-4o
+model: openai-4o
 system_instructions: |
   ## Instructions
   You are an Data Analyst expert. Your task is to help the user generate and execute sql query to answer user's question.
